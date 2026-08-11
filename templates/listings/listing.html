@@ -1,0 +1,60 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}MyWallpaper - Mountain Sunset{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <a href="{% url 'listings' %}" class="text-muted small mb-3 d-inline-block">
+    <i class="fas fa-arrow-left"></i> Back to Gallery
+  </a>
+
+  <div class="row">
+    <div class="col-lg-8 mb-4">
+      <img src="https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&w=1200"
+           class="img-fluid rounded shadow-sm" alt="Mountain Sunset">
+    </div>
+    <div class="col-lg-4">
+      <h2 class="font-weight-bold">Mountain Sunset</h2>
+      <p class="text-muted">
+        <span class="mr-3"><i class="fas fa-tag"></i> Nature</span>
+        <span><i class="fas fa-expand"></i> 3840 × 2160</span>
+      </p>
+      <div class="mb-4">
+        <a href="#" class="btn btn-dark mr-2"><i class="fas fa-download"></i> Download</a>
+        <a href="#" class="btn btn-outline-dark"><i class="fas fa-bookmark"></i> Bookmark</a>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="font-weight-bold">Details</h6>
+          <ul class="list-unstyled mb-0 small">
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted">Category</span><span>Nature</span>
+            </li>
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted">Resolution</span><span>3840 × 2160</span>
+            </li>
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted">Format</span><span>JPG</span>
+            </li>
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted">File size</span><span>4.2 MB</span>
+            </li>
+            <li class="d-flex justify-content-between py-1">
+              <span class="text-muted">Downloads</span><span>1,248</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h5 class="font-weight-bold">Description</h5>
+    <p class="text-muted">
+      A dramatic mountain sunset with vibrant pink and orange clouds reflecting over a calm lake.
+      Perfect for desktop backgrounds. Shot in high resolution for 4K displays.
+    </p>
+  </div>
+</div>
+{% endblock %}
