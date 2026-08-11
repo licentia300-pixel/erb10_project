@@ -1,0 +1,79 @@
+{% extends 'pages/base.html' %}
+
+{% block title %}MyWallpaper{% endblock %}
+
+{% block content %}
+<section class="py-5 text-center">
+  <div class="container">
+    <h1 class="display-4 font-weight-bold">Free 4K Wallpapers</h1>
+    <p class="lead text-muted mb-4">Discover high-quality wallpapers. Browse by category and save your favourites.</p>
+    <a href="{% url 'listings' %}" class="btn btn-dark btn-lg">Explore Gallery</a>
+  </div>
+</section>
+
+<div class="container pb-5">
+  <h3 class="mb-4">Featured</h3>
+  <div class="row">
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">Mountain Sunset</h5>
+          <p class="card-text text-muted small">Nature · 3840×2160</p>
+          <a href="{% url 'listing' %}" class="btn btn-outline-dark btn-sm">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">Purple Horizon</h5>
+          <p class="card-text text-muted small">Nature · 3840×2160</p>
+          <a href="{% url 'listing' %}" class="btn btn-outline-dark btn-sm">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="https://images.pexels.com/photos/1624496/pexels-photo-1624496.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">Soft Curves</h5>
+          <p class="card-text text-muted small">Animation · 2560×1440</p>
+          <a href="{% url 'listing' %}" class="btn btn-outline-dark btn-sm">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="https://images.pexels.com/photos/1287145/pexels-photo-1287145.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">Autumn Lake</h5>
+          <p class="card-text text-muted small">Nature · 3840×2160</p>
+          <a href="{% url 'listing' %}" class="btn btn-outline-dark btn-sm">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="https://images.pexels.com/photos/167699/pexels-photo-167699.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">City Lights</h5>
+          <p class="card-text text-muted small">City View · 3840×2160</p>
+          <a href="{% url 'listing' %}" class="btn btn-outline-dark btn-sm">View</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <img src="https://images.pexels.com/photos/956999/milky-way-starry-sky-night-sky-star-956999.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="">
+        <div class="card-body">
+          <h5 class="card-title">Milky Way</h5>
+          <p class="card-text text-muted small">Space · 3840×2160</p>
+          <a href="{% url 'listing' %}" class="btn btn-outline-dark btn-sm">View</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
