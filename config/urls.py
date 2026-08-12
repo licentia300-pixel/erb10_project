@@ -16,14 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #path('', include('pages.urls', namespace='pages')),
-    #path('about/', include('pages.urls', namespace='about')),
-    path('accounts/',include('accounts.urls', namespace='accounts')),
-]
-
-# Important for media files (images)
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('listings/', include('listings.urls', namespace='listings')),  # ← 加上这一行
+    # 队友的 pages 路由暂时注释掉（等他们提交后再恢复）
+    # path('', include('pages.urls', namespace='pages')),
+    # path('about/', include('pages.urls', namespace='about')),
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

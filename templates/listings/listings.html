@@ -10,12 +10,12 @@
   <!-- Category filters -->
   <div class="mb-4">
     <a href="{% url 'listings:wallpaper_list' %}"
-       class="btn btn-sm mr-1 mb-1 {% if not request.GET.category %}btn-dark{% else %}btn-outline-dark{% endif %}">
+      class="btn btn-sm mr-1 mb-1 {% if not request.GET.category %}btn-dark{% else %}btn-outline-dark{% endif %}">
       All
     </a>
     {% for value, label in category_choices %}
       <a href="{% url 'listings:wallpaper_list' %}?category={{ value }}"
-         class="btn btn-sm mr-1 mb-1 {% if request.GET.category == value %}btn-dark{% else %}btn-outline-dark{% endif %}">
+        class="btn btn-sm mr-1 mb-1 {% if request.GET.category == value %}btn-dark{% else %}btn-outline-dark{% endif %}">
         {{ label }}
       </a>
     {% endfor %}
@@ -53,7 +53,7 @@
         {% if page_obj.has_previous %}
           <li class="page-item">
             <a class="page-link"
-               href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+              href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
               &laquo;
             </a>
           </li>
@@ -68,7 +68,7 @@
         {% if page_obj.has_next %}
           <li class="page-item">
             <a class="page-link"
-               href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+              href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
               &raquo;
             </a>
           </li>

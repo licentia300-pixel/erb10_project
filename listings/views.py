@@ -26,7 +26,7 @@ def wallpaper_list(request):
         'page_obj': page_obj,
         'category_choices': CATEGORY_CHOICES,
     }
-    return render(request, 'listings/wallpaper_list.html', context)
+    return render(request, 'listings/listings.html', context)  # ← 改这里
 
 
 def wallpaper_detail(request, pk):
@@ -43,7 +43,7 @@ def wallpaper_detail(request, pk):
         'wallpaper': wallpaper,
         'is_bookmarked': is_bookmarked,
     }
-    return render(request, 'listings/wallpaper_detail.html', context)
+    return render(request, 'listings/listing.html', context)  # ← 改这里
 
 
 def wallpaper_download(request, pk):

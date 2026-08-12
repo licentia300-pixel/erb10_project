@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from listings.models import Bookmark  # ← 新增这一行
 
 
 def register(request):
@@ -73,7 +74,13 @@ def login_view(request):
 
 @login_required
 def dashboard(request):
-    return render(request, 'accounts/dashboard.html', {'user': request.user})
+    # 获取当前用户的所有收藏
+    bookmarks = Bookmark.objects.filter(user=request.user).select_related('wallpaper')
+    context = {
+        'user': request.user,
+        'bookmarks': bookmarks,
+    }
+    return render(request, 'accounts/dashboard.html', context)
 
 
 def logout_view(request):

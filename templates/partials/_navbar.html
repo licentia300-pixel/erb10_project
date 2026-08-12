@@ -6,17 +6,17 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="#">Home</a>
+          <a class="nav-link" href="/">Home</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Categories</a>
           <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="#">City View</a>
-            <a class="dropdown-item" href="#">Animation</a>
-            <a class="dropdown-item" href="#">Nature</a>
-            <a class="dropdown-item" href="#">Space</a>
+            <a class="dropdown-item" href="{% url 'listings:wallpaper_list' %}?category=city_view">City View</a>
+            <a class="dropdown-item" href="{% url 'listings:wallpaper_list' %}?category=animation">Animation</a>
+            <a class="dropdown-item" href="{% url 'listings:wallpaper_list' %}?category=nature">Nature</a>
+            <a class="dropdown-item" href="{% url 'listings:wallpaper_list' %}?category=space">Space</a>
           </div>
         </li>
         <li class="nav-item"><a class="nav-link" href="#">About</a></li>

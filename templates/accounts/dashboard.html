@@ -13,26 +13,48 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
       <h2 class="font-weight-bold mb-1">Your Bookmarks</h2>
-      <p class="text-muted mb-0">Welcome back, {{ user.first_name|default:user.username }}. Here are the wallpapers you have saved.</p>
+      <p class="text-muted mb-0">
+        Welcome back, {{ user.first_name|default:user.username }}.
+        You have {{ bookmarks|length }} bookmark{{ bookmarks|length|pluralize }}.
+      </p>
     </div>
-    <!-- 登出按钮 -->
     <a href="{% url 'accounts:logout' %}" class="btn btn-outline-danger">Log out</a>
   </div>
 
   <div class="row">
-    <!-- paste the 4 bookmark cards from your original dashboard.html here -->
-    <div class="col-md-6 col-lg-3 mb-4">
-      <div class="card h-100 shadow-sm">
-        <img src="https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&w=500" class="card-img-top" alt="">
-        <div class="card-body">
-          <h6 class="card-title mb-1">Mountain Sunset</h6>
-          <p class="card-text text-muted small mb-2">Nature · 3840×2160</p>
-          <a href="#" class="btn btn-outline-dark btn-sm mr-1">View</a>
-          <a href="#" class="btn btn-outline-danger btn-sm">Delete</a>
+    {% for bookmark in bookmarks %}
+      <div class="col-md-6 col-lg-3 mb-4">
+        <div class="card h-100 shadow-sm">
+          <a href="{% url 'listings:wallpaper_detail' bookmark.wallpaper.pk %}">
+            <img src="{{ bookmark.wallpaper.image.url }}" class="card-img-top" alt="{{ bookmark.wallpaper.title }}">
+          </a>
+          <div class="card-body">
+            <h6 class="card-title mb-1">{{ bookmark.wallpaper.title }}</h6>
+            <p class="card-text text-muted small mb-2">
+              {{ bookmark.wallpaper.get_category_display }} · {{ bookmark.wallpaper.resolution }}
+            </p>
+            <div class="d-flex justify-content-between">
+              <a href="{% url 'listings:wallpaper_detail' bookmark.wallpaper.pk %}" class="btn btn-outline-dark btn-sm">
+                View
+              </a>
+              <form method="post" action="{% url 'listings:bookmark_remove' bookmark.wallpaper.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                  <i class="fas fa-bookmark"></i> Remove
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <!-- ... rest of the cards ... -->
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info">
+          You haven't bookmarked any wallpapers yet. 
+          <a href="{% url 'listings:wallpaper_list' %}" class="alert-link">Browse the gallery</a> to find your favorites.
+        </div>
+      </div>
+    {% endfor %}
   </div>
 </div>
 {% endblock %}
