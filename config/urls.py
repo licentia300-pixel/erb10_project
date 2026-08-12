@@ -16,13 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
-
-def index_view(request):
-    return HttpResponse("这是临时首页，稍后由 teammates 替换。")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('pages.urls', namespace='pages')),
+    path('about/', include('pages.urls', namespace='about')),
     path('',index_view,name='index'),
     path('accounts/',include('accounts.urls', namespace='accounts'))
 ]

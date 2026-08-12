@@ -30,19 +30,29 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
-    # Your apps
-    'accounts.apps.AccountsConfig',
+    'django.contrib.humanize',
+]
+
+LOCAL_APPS = [
     'pages.apps.PagesConfig',
     'listings.apps.ListingsConfig',
+    'accounts.apps.AccountsConfig',
 ]
+
+THIRD_PARTY_APPS = [
+    'debug_toolbar',
+    'widget_tweaks',
+    'taggit',
+]
+
+INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -80,9 +90,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'project_data',        # ← 改成这个，和 pgAdmin 里一致
+        'NAME': 'project_data',        
         'USER': 'postgres',
-        'PASSWORD': '1234',        # 确认密码正确
+        'PASSWORD': '1234',        
         'HOST': 'localhost',
         'PORT': '5432',
     }
