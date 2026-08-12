@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ wallpaper.title }} - MyWallpaper{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <a href="{% url 'listings:wallpaper_list' %}" class="text-muted small mb-3 d-inline-block">
+    <i class="fas fa-arrow-left"></i> Back to Gallery
+  </a>
+
+  <div class="row">
+    <div class="col-lg-8 mb-4">
+      <img src="{{ wallpaper.image.url }}" class="img-fluid rounded shadow-sm" alt="{{ wallpaper.title }}">
+    </div>
+
+    <div class="col-lg-4">
+      <h2 class="font-weight-bold">{{ wallpaper.title }}</h2>
+      <p class="text-muted">
+        <span class="mr-3"><i class="fas fa-tag"></i> {{ wallpaper.get_category_display }}</span>
+        <span><i class="fas fa-expand"></i> {{ wallpaper.resolution }}</span>
+      </p>
+
+      <div class="mb-4">
+        <a href="{% url 'listings:wallpaper_download' wallpaper.pk %}" class="btn btn-dark mr-2">
+          <i class="fas fa-download"></i> Download
+        </a>
+
+        {% if user.is_authenticated %}
+          {% if is_bookmarked %}
+            <form method="post" action="{% url 'listings:bookmark_remove' wallpaper.pk %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-danger">
+                <i class="fas fa-bookmark"></i> Remove Bookmark
+              </button>
+            </form>
+          {% else %}
+            <form method="post" action="{% url 'listings:bookmark_add' wallpaper.pk %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-dark">
+                <i class="fas fa-bookmark"></i> Bookmark
+              </button>
+            </form>
+          {% endif %}
+        {% else %}
+          <a href="{% url 'accounts:login' %}" class="btn btn-outline-dark">
+            <i class="fas fa-bookmark"></i> Login to Bookmark
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h6 class="font-weight-bold">Details</h6>
+          <ul class="list-unstyled mb-0 small">
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted">Category</span>
+              <span>{{ wallpaper.get_category_display }}</span>
+            </li>
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted">Resolution</span>
+              <span>{{ wallpaper.resolution }}</span>
+            </li>
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted">Format</span>
+              <span>{{ wallpaper.get_format_display }}</span>
+            </li>
+            <li class="d-flex justify-content-between py-1 border-bottom">
+              <span class="text-muted">File size</span>
+              <span>{{ wallpaper.filesize }}</span>
+            </li>
+            <li class="d-flex justify-content-between py-1">
+              <span class="text-muted">Downloads</span>
+              <span>{{ wallpaper.download_count }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% if wallpaper.description %}
+    <div class="mt-4">
+      <h5 class="font-weight-bold">Description</h5>
+      <p class="text-muted">{{ wallpaper.description }}</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
