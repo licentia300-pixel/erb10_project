@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <i class="fas fa-bars"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Left side -->
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'index' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'listings:wallpaper_list' %}">Wallpapers</a>
+        </li>
+      </ul>
+
+      <!-- Right side -->
+      <ul class="navbar-nav ml-auto">
+        <!-- Categories Dropdown -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
+            Categories
+          </a>
+          <div class="dropdown-menu dropdown-menu-right">
+            <a class="dropdown-item" href="{% url 'listings:wallpaper_list' %}?category=city_view">City View</a>
+            <a class="dropdown-item" href="{% url 'listings:wallpaper_list' %}?category=animation">Animation</a>
+            <a class="dropdown-item" href="{% url 'listings:wallpaper_list' %}?category=nature">Nature</a>
+            <a class="dropdown-item" href="{% url 'listings:wallpaper_list' %}?category=space">Space</a>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'pages:about' %}">About</a>
+        </li>
+
+        {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:dashboard' %}">{{ user.username }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:register' %}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'accounts:login' %}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

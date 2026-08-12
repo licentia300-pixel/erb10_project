@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Gallery - MyWallpaper{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+  <h2 class="mb-2">Wallpaper Gallery</h2>
+  <p class="text-muted mb-4">Browse free 4K wallpapers by category</p>
+
+  <!-- Category filters -->
+  <div class="mb-4">
+    <a href="{% url 'listings:wallpaper_list' %}"
+       class="btn btn-sm mr-1 mb-1 {% if not request.GET.category %}btn-dark{% else %}btn-outline-dark{% endif %}">
+      All
+    </a>
+    {% for value, label in category_choices %}
+      <a href="{% url 'listings:wallpaper_list' %}?category={{ value }}"
+         class="btn btn-sm mr-1 mb-1 {% if request.GET.category == value %}btn-dark{% else %}btn-outline-dark{% endif %}">
+        {{ label }}
+      </a>
+    {% endfor %}
+  </div>
+
+  <div class="row">
+    {% for wallpaper in wallpapers %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <a href="{% url 'listings:wallpaper_detail' wallpaper.pk %}">
+            <img src="{{ wallpaper.image.url }}" class="card-img-top" alt="{{ wallpaper.title }}">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">{{ wallpaper.title }}</h5>
+            <p class="card-text text-muted small">
+              {{ wallpaper.get_category_display }} · {{ wallpaper.resolution }}
+            </p>
+            <a href="{% url 'listings:wallpaper_detail' wallpaper.pk %}" class="btn btn-outline-dark btn-sm">
+              View
+            </a>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info">No wallpapers found in this category.</div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  {% if page_obj.has_other_pages %}
+    <nav class="mt-4">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link"
+               href="?page={{ page_obj.previous_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+              &laquo;
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+        {% endif %}
+
+        <li class="page-item active">
+          <span class="page-link">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+        </li>
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link"
+               href="?page={{ page_obj.next_page_number }}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+              &raquo;
+            </a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+        {% endif %}
+      </ul>
+    </nav>
+  {% endif %}
+</div>
+{% endblock %}
