@@ -13,16 +13,21 @@
   <div class="container pb-5">
     <h3 class="mb-4">Featured</h3>
     <div class="row">
+      {% if listings %}
+      {% for listing in listings %}
       <div class="col-md-6 col-lg-4 mb-4">
         <div class="card h-100 shadow-sm">
-          <img src="https://images.pexels.com/photos/1366919/pexels-photo-1366919.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="">
+          <img src={{listing.imgage.url}} class="card-img-top" alt="">
           <div class="card-body">
-            <h5 class="card-title">Mountain Sunset</h5>
-            <p class="card-text text-muted small">Nature · 3840×2160</p>
+            <h5 class="card-title">{{listing.title | title}}</h5>
+            <p class="card-text text-muted small">{{listing.category}} · {{listing.resolution}}</p>
             <a href="listing.html" class="btn btn-outline-dark btn-sm">View</a>
           </div>
         </div>
       </div>
+      {% endfor %}
+      {% endif %}
+      {% comment %}
       <div class="col-md-6 col-lg-4 mb-4">
         <div class="card h-100 shadow-sm">
           <img src="https://images.pexels.com/photos/1252890/pexels-photo-1252890.jpeg?auto=compress&cs=tinysrgb&w=600" class="card-img-top" alt="">
@@ -75,5 +80,6 @@
       </div>
     </div>
   </div>
+  {% endcomment %}
 
 {% endblock %}
