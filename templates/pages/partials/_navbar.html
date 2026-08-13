@@ -11,15 +11,21 @@
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Categories</a>
             <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="listings.html">City View</a>
-            <a class="dropdown-item" href="listings.html">Animation</a>
-            <a class="dropdown-item" href="listings.html">Nature</a>
-            <a class="dropdown-item" href="listings.html">Space</a>
+            <a class="dropdown-item" href={% url "listings:wallpaper_list" %}?category=city_view>City View</a>
+            <a class="dropdown-item" href={% url "listings:wallpaper_list" %}?category=animation>Animation</a>
+            <a class="dropdown-item" href={% url "listings:wallpaper_list" %}?category=nature>Nature</a>
+            <a class="dropdown-item" href={% url "listings:wallpaper_list" %}?category=space>Space</a>
             </div>
         </li>
         <li class="nav-item active"><a class="nav-link" href={% url "pages:about" %}>About</a></li>
-        <li class="nav-item"><a class="nav-link" href="register.html">Register</a></li>
-        <li class="nav-item"><a class="nav-link" href="login.html">Login</a></li>
+        {% if user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href={% url "accounts:dashboard" %}>Welcome {{user.username | title}}</a></li>
+        <li class="nav-item"><a class="nav-link" href={% url "accounts:logout" %}>Logout</a></li>
+        {% csrf_token %}
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href={% url "accounts:register" %}>Register</a></li>
+        <li class="nav-item"><a class="nav-link" href={% url "accounts:login" %}>Login</a></li>
+        {% endif %}
         </ul>
     </div>
     </div>
