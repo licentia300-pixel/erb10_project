@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="listing-detail" class="py-4">
+  <div class="container">
+    <div class="row">
+      <!-- Main Image Preview Column -->
+      <div class="col-md-8 mb-4">
+        <div class="card shadow-sm">
+          <img 
+            src="{{ listing.photo_main.url }}" 
+            class="card-img-top img-fluid rounded" 
+            alt="{{ listing.title }}"
+          >
+          <div class="card-body">
+            <h3 class="card-title font-weight-bold">{{ listing.title }}</h3>
+            <p class="card-text text-muted">{{ listing.description }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Specifications & Actions Sidebar -->
+      <div class="col-md-4">
+        <!-- Technical Details Card -->
+        <div class="card shadow-sm mb-4">
+          <div class="card-header bg-dark text-white">
+            <h5 class="mb-0"><i class="fas fa-info-circle"></i> Wallpaper Info</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-folder text-secondary mr-2"></i> Category</span>
+              <span class="badge badge-primary badge-pill">{{ listing.category }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-desktop text-secondary mr-2"></i> Resolution</span>
+              <strong>{{ listing.resolution }}</strong>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-file-image text-secondary mr-2"></i> Format</span>
+              <span>{{ listing.format }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-hdd text-secondary mr-2"></i> File Size</span>
+              <span>{{ listing.file_size }}</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><i class="fas fa-download text-secondary mr-2"></i> Downloads</span>
+              <span>{{ listing.downloads }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Interactive Action Buttons -->
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <!-- Download Button -->
+            <a 
+              href="{{ listing.photo_main.url }}" 
+              download 
+              class="btn btn-success btn-block btn-lg mb-3"
+            >
+              <i class="fas fa-download mr-1"></i> Download Original
+            </a>
+
+            <!-- Bookmark Form Action -->
+            {% if user.is_authenticated %}
+              <form action="{% url 'listings:bookmark' listing.id %}" method="POST">
+                {% csrf_token %}
+                {% if is_bookmarked %}
+                  <button type="submit" class="btn btn-outline-danger btn-block">
+                    <i class="fas fa-heart text-danger mr-1"></i> Remove Bookmark
+                  </button>
+                {% else %}
+                  <button type="submit" class="btn btn-outline-primary btn-block">
+                    <i class="far fa-heart mr-1"></i> Save to Bookmarks
+                  </button>
+                {% endif %}
+              </form>
+            {% else %}
+              <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary btn-block">
+                <i class="far fa-heart mr-1"></i> Login to Bookmark
+              </a>
+            {% endif %}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
