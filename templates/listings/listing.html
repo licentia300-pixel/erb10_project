@@ -4,8 +4,8 @@
 
 {% block content %}
 <div class="container py-5">
-  <a href="{% url 'listings:wallpaper_list' %}" class="text-muted small mb-3 d-inline-block">
-    <i class="fas fa-arrow-left"></i> Back to Gallery
+  <a href="{{ back_url }}" class="text-muted small mb-3 d-inline-block">
+    <i class="fas fa-arrow-left"></i> Back
   </a>
 
   <div class="row">
@@ -77,12 +77,5 @@
       </div>
     </div>
   </div>
-
-  {% if wallpaper.description %}
-    <div class="mt-4">
-      <h5 class="font-weight-bold">Description</h5>
-      <p class="text-muted">{{ wallpaper.description }}</p>
-    </div>
-  {% endif %}
 </div>
 {% endblock %}

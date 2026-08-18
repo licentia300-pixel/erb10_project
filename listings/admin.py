@@ -6,12 +6,12 @@ from .models import Wallpaper, Bookmark
 class WallpaperAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'category', 'resolution', 'format', 'filesize', 'uploaded_by', 'uploaded_at', 'download_count')
     list_filter = ('category', 'format')
-    search_fields = ('title', 'description')
+    search_fields = ('title',)  # 移除 'description'
     list_display_links = ('id', 'title')
     readonly_fields = ('uploaded_at', 'download_count')
     fieldsets = (
         (None, {
-            'fields': ('title', 'image', 'category', 'resolution', 'format', 'filesize', 'description')
+            'fields': ('title', 'image', 'category', 'resolution', 'format', 'filesize')  # 移除 'description'
         }),
         ('Meta', {
             'fields': ('uploaded_by', 'uploaded_at', 'download_count')

@@ -37,12 +37,15 @@
               <a href="{% url 'listings:wallpaper_detail' bookmark.wallpaper.pk %}" class="btn btn-outline-dark btn-sm">
                 View
               </a>
-              <form method="post" action="{% url 'listings:bookmark_remove' bookmark.wallpaper.pk %}">
+              <form method="post" action="{% url 'listings:bookmark_remove' bookmark.wallpaper.pk %}"
+                    id="remove-form-{{ bookmark.wallpaper.pk }}" style="display:none;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline-danger btn-sm">
-                  <i class="fas fa-bookmark"></i> Remove
-                </button>
               </form>
+              <button type="button" class="btn btn-outline-danger btn-sm"
+                      data-toggle="modal" data-target="#confirmRemoveModal"
+                      data-wallpaper-id="{{ bookmark.wallpaper.pk }}">
+                <i class="fas fa-bookmark"></i> Remove
+              </button>
             </div>
           </div>
         </div>
@@ -50,11 +53,69 @@
     {% empty %}
       <div class="col-12">
         <div class="alert alert-info">
-          You haven't bookmarked any wallpapers yet. 
+          You haven't bookmarked any wallpapers yet.
           <a href="{% url 'listings:wallpaper_list' %}" class="alert-link">Browse the gallery</a> to find your favorites.
         </div>
       </div>
     {% endfor %}
   </div>
 </div>
+
+<div class="modal fade" id="confirmRemoveModal" tabindex="-1" role="dialog" aria-labelledby="confirmRemoveModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmRemoveModalLabel">Confirm Removal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to remove this wallpaper from your bookmarks?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmRemoveBtn">Yes, Remove</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function() {
+    $(document).ready(function() {
+      console.log('Dashboard: jQuery ready, script running');
+
+      let currentWallpaperId = null;
+
+      $('#confirmRemoveModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        currentWallpaperId = button.data('wallpaper-id');
+        console.log('Modal shown, wallpaper ID:', currentWallpaperId);
+      });
+
+      $('#confirmRemoveBtn').on('click', function() {
+        console.log('Confirm clicked, currentWallpaperId:', currentWallpaperId);
+        if (currentWallpaperId) {
+          var form = $('#remove-form-' + currentWallpaperId);
+          if (form.length) {
+            console.log('Submitting form for wallpaper ID:', currentWallpaperId);
+            form.submit();
+          } else {
+            console.error('Form not found for ID:', currentWallpaperId);
+          }
+          $('#confirmRemoveModal').modal('hide');
+        } else {
+          console.warn('No wallpaper ID set');
+        }
+      });
+
+      $('#confirmRemoveModal').on('hidden.bs.modal', function () {
+        currentWallpaperId = null;
+      });
+    });
+  })();
+</script>
 {% endblock %}
