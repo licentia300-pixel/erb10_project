@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h1 class="font-weight-bold">About MyWallpaper</h1>
+      <p class="lead text-muted">A simple place to discover and collect free 4K wallpapers.</p>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-images fa-2x mb-3 text-dark"></i>
+            <h5 class="card-title">Curated Collections</h5>
+            <p class="card-text text-muted">Four categories: City View, Animation, Nature and Space.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-bookmark fa-2x mb-3 text-dark"></i>
+            <h5 class="card-title">Bookmark System</h5>
+            <p class="card-text text-muted">Save wallpapers you love and manage them in your dashboard.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body text-center">
+            <i class="fas fa-desktop fa-2x mb-3 text-dark"></i>
+            <h5 class="card-title">4K Ready</h5>
+            <p class="card-text text-muted">All wallpapers are high-resolution for modern screens.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-4">
+      <a href={% url "listings:wallpaper_list" %} class="btn btn-dark btn-lg">Browse Wallpapers</a>
+    </div>
+  </div>
+
+{% endblock %}

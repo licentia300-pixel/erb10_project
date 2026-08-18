@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+  <!-- Hero -->
+  <section class="py-5 text-center">
+    <div class="container">
+      <h1 class="display-4 font-weight-bold">Free 4K Wallpapers</h1>
+      <p class="lead text-muted mb-4">Discover high-quality wallpapers. Browse by category and save your favourites.</p>
+      <a href={% url "listings:wallpaper_list" %} class="btn btn-dark btn-lg">Explore Gallery</a>
+    </div>
+  </section>
+
+  <!-- Featured -->
+  <div class="container pb-5">
+    <h3 class="mb-4">Featured</h3>
+    <div class="row">
+      {% if listings %}
+      {% for listing in listings %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <img src={{listing.image.url}} class="card-img-top" alt="">
+          <div class="card-body">
+            <h5 class="card-title">{{listing.title | title}}</h5>
+            <p class="card-text text-muted small">{{listing.category}} · {{listing.resolution}}</p>
+            <a href={% url "listings:wallpaper_detail" listing.id %} class="btn btn-outline-dark btn-sm">View</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% endif %}
+  </div>
+
+{% endblock %}
