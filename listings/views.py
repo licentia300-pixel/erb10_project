@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import FileResponse, Http404
 from django.contrib import messages
+from django.urls import reverse
 from .models import Wallpaper, Bookmark
 from .choices import CATEGORY_CHOICES
 import os
@@ -11,13 +12,11 @@ import os
 def wallpaper_list(request):
     wallpapers = Wallpaper.objects.all().order_by('-uploaded_at')
 
-    # Category filter
     category = request.GET.get('category')
     if category:
         wallpapers = wallpapers.filter(category=category)
 
-    # Pagination
-    paginator = Paginator(wallpapers, 9)  # 9 per page
+    paginator = Paginator(wallpapers, 9)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
@@ -27,7 +26,6 @@ def wallpaper_list(request):
         'category_choices': CATEGORY_CHOICES,
     }
     return render(request, 'listings/listings.html', context)
-
 
 def wallpaper_detail(request, pk):
     wallpaper = get_object_or_404(Wallpaper, pk=pk)
@@ -39,9 +37,20 @@ def wallpaper_detail(request, pk):
             wallpaper=wallpaper
         ).exists()
 
+    if request.GET.get('updated'):
+        back_url = request.session.get('wallpaper_back_url', reverse('listings:wallpaper_list'))
+    else:
+        back_url = request.META.get('HTTP_REFERER')
+        if back_url:
+            request.session['wallpaper_back_url'] = back_url
+        else:
+            back_url = reverse('listings:wallpaper_list')
+            request.session['wallpaper_back_url'] = back_url
+
     context = {
         'wallpaper': wallpaper,
         'is_bookmarked': is_bookmarked,
+        'back_url': back_url,
     }
     return render(request, 'listings/listing.html', context)
 
@@ -69,7 +78,8 @@ def bookmark_add(request, pk):
     wallpaper = get_object_or_404(Wallpaper, pk=pk)
     Bookmark.objects.get_or_create(user=request.user, wallpaper=wallpaper)
     messages.success(request, f'"{wallpaper.title}" added to your bookmarks.')
-    return redirect('listings:wallpaper_detail', pk=pk)
+
+    return redirect(f"{reverse('listings:wallpaper_detail', args=[pk])}?updated=1")
 
 
 @login_required
@@ -77,9 +87,9 @@ def bookmark_remove(request, pk):
     wallpaper = get_object_or_404(Wallpaper, pk=pk)
     Bookmark.objects.filter(user=request.user, wallpaper=wallpaper).delete()
     messages.success(request, f'"{wallpaper.title}" removed from your bookmarks.')
-    
-    # 返回到之前所在的页面（Dashboard 或详情页）
+
     referer = request.META.get('HTTP_REFERER')
-    if referer:
+    if referer and '/dashboard/' in referer:
         return redirect(referer)
-    return redirect('listings:wallpaper_detail', pk=pk)
+    else:
+        return redirect(f"{reverse('listings:wallpaper_detail', args=[pk])}?updated=1")

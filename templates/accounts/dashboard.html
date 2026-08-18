@@ -37,12 +37,10 @@
               <a href="{% url 'listings:wallpaper_detail' bookmark.wallpaper.pk %}" class="btn btn-outline-dark btn-sm">
                 View
               </a>
-              <!-- 隐藏的删除表单 -->
               <form method="post" action="{% url 'listings:bookmark_remove' bookmark.wallpaper.pk %}"
                     id="remove-form-{{ bookmark.wallpaper.pk }}" style="display:none;">
                 {% csrf_token %}
               </form>
-              <!-- 触发模态框的按钮 -->
               <button type="button" class="btn btn-outline-danger btn-sm"
                       data-toggle="modal" data-target="#confirmRemoveModal"
                       data-wallpaper-id="{{ bookmark.wallpaper.pk }}">
@@ -63,7 +61,6 @@
   </div>
 </div>
 
-<!-- ====== 确认删除模态框 ====== -->
 <div class="modal fade" id="confirmRemoveModal" tabindex="-1" role="dialog" aria-labelledby="confirmRemoveModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -85,24 +82,20 @@
 </div>
 {% endblock %}
 
-{# ====== JavaScript 放在 extra_js 块中，确保在 jQuery 加载之后 ====== #}
 {% block extra_js %}
 <script>
   (function() {
-    // 使用 jQuery 的 ready 事件确保 DOM 完全加载
     $(document).ready(function() {
       console.log('Dashboard: jQuery ready, script running');
 
       let currentWallpaperId = null;
 
-      // 1. 当模态框显示时，从触发按钮获取 wallpaper ID
       $('#confirmRemoveModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget);
         currentWallpaperId = button.data('wallpaper-id');
         console.log('Modal shown, wallpaper ID:', currentWallpaperId);
       });
 
-      // 2. 点击确认删除按钮时，提交对应的表单
       $('#confirmRemoveBtn').on('click', function() {
         console.log('Confirm clicked, currentWallpaperId:', currentWallpaperId);
         if (currentWallpaperId) {
@@ -113,14 +106,12 @@
           } else {
             console.error('Form not found for ID:', currentWallpaperId);
           }
-          // 关闭模态框
           $('#confirmRemoveModal').modal('hide');
         } else {
           console.warn('No wallpaper ID set');
         }
       });
 
-      // 3. 清理缓存
       $('#confirmRemoveModal').on('hidden.bs.modal', function () {
         currentWallpaperId = null;
       });
