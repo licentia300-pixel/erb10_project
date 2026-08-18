@@ -37,12 +37,17 @@
               <a href="{% url 'listings:wallpaper_detail' bookmark.wallpaper.pk %}" class="btn btn-outline-dark btn-sm">
                 View
               </a>
-              <form method="post" action="{% url 'listings:bookmark_remove' bookmark.wallpaper.pk %}">
+              <!-- 隐藏的删除表单 -->
+              <form method="post" action="{% url 'listings:bookmark_remove' bookmark.wallpaper.pk %}"
+                    id="remove-form-{{ bookmark.wallpaper.pk }}" style="display:none;">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-outline-danger btn-sm">
-                  <i class="fas fa-bookmark"></i> Remove
-                </button>
               </form>
+              <!-- 触发模态框的按钮 -->
+              <button type="button" class="btn btn-outline-danger btn-sm"
+                      data-toggle="modal" data-target="#confirmRemoveModal"
+                      data-wallpaper-id="{{ bookmark.wallpaper.pk }}">
+                <i class="fas fa-bookmark"></i> Remove
+              </button>
             </div>
           </div>
         </div>
@@ -50,11 +55,76 @@
     {% empty %}
       <div class="col-12">
         <div class="alert alert-info">
-          You haven't bookmarked any wallpapers yet. 
+          You haven't bookmarked any wallpapers yet.
           <a href="{% url 'listings:wallpaper_list' %}" class="alert-link">Browse the gallery</a> to find your favorites.
         </div>
       </div>
     {% endfor %}
   </div>
 </div>
+
+<!-- ====== 确认删除模态框 ====== -->
+<div class="modal fade" id="confirmRemoveModal" tabindex="-1" role="dialog" aria-labelledby="confirmRemoveModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmRemoveModalLabel">Confirm Removal</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to remove this wallpaper from your bookmarks?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirmRemoveBtn">Yes, Remove</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{# ====== JavaScript 放在 extra_js 块中，确保在 jQuery 加载之后 ====== #}
+{% block extra_js %}
+<script>
+  (function() {
+    // 使用 jQuery 的 ready 事件确保 DOM 完全加载
+    $(document).ready(function() {
+      console.log('Dashboard: jQuery ready, script running');
+
+      let currentWallpaperId = null;
+
+      // 1. 当模态框显示时，从触发按钮获取 wallpaper ID
+      $('#confirmRemoveModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        currentWallpaperId = button.data('wallpaper-id');
+        console.log('Modal shown, wallpaper ID:', currentWallpaperId);
+      });
+
+      // 2. 点击确认删除按钮时，提交对应的表单
+      $('#confirmRemoveBtn').on('click', function() {
+        console.log('Confirm clicked, currentWallpaperId:', currentWallpaperId);
+        if (currentWallpaperId) {
+          var form = $('#remove-form-' + currentWallpaperId);
+          if (form.length) {
+            console.log('Submitting form for wallpaper ID:', currentWallpaperId);
+            form.submit();
+          } else {
+            console.error('Form not found for ID:', currentWallpaperId);
+          }
+          // 关闭模态框
+          $('#confirmRemoveModal').modal('hide');
+        } else {
+          console.warn('No wallpaper ID set');
+        }
+      });
+
+      // 3. 清理缓存
+      $('#confirmRemoveModal').on('hidden.bs.modal', function () {
+        currentWallpaperId = null;
+      });
+    });
+  })();
+</script>
 {% endblock %}

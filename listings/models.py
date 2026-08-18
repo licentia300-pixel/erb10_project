@@ -10,7 +10,6 @@ class Wallpaper(models.Model):
     resolution = models.CharField(max_length=50, verbose_name="Resolution")
     format = models.CharField(max_length=20, choices=FORMAT_CHOICES, verbose_name="Format")
     filesize = models.CharField(max_length=50, verbose_name="File Size")
-    description = models.TextField(verbose_name="Description", blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True, verbose_name="Uploaded At")
     uploaded_by = models.ForeignKey(
         User,

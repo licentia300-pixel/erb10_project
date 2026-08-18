@@ -26,7 +26,7 @@ def wallpaper_list(request):
         'page_obj': page_obj,
         'category_choices': CATEGORY_CHOICES,
     }
-    return render(request, 'listings/listings.html', context)  # ← 改这里
+    return render(request, 'listings/listings.html', context)
 
 
 def wallpaper_detail(request, pk):
@@ -43,7 +43,7 @@ def wallpaper_detail(request, pk):
         'wallpaper': wallpaper,
         'is_bookmarked': is_bookmarked,
     }
-    return render(request, 'listings/listing.html', context)  # ← 改这里
+    return render(request, 'listings/listing.html', context)
 
 
 def wallpaper_download(request, pk):
@@ -77,4 +77,9 @@ def bookmark_remove(request, pk):
     wallpaper = get_object_or_404(Wallpaper, pk=pk)
     Bookmark.objects.filter(user=request.user, wallpaper=wallpaper).delete()
     messages.success(request, f'"{wallpaper.title}" removed from your bookmarks.')
+    
+    # 返回到之前所在的页面（Dashboard 或详情页）
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
     return redirect('listings:wallpaper_detail', pk=pk)
